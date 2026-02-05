@@ -19,6 +19,8 @@ Technology Stack
 
 
 Frontend Responsibility:
+ - Design Screens
+ - Create webapp
 
 
 Backend Responsibilities:
