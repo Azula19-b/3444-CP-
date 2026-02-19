@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "sqlite3": "^5.1.7"
+  },
+  "name": "3444-cp-",
+  "version": "1.0.0",
+  "description": "Name: UNT quick bytes",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azula19-b/3444-CP-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Azula19-b/3444-CP-/issues"
+  },
+  "homepage": "https://github.com/Azula19-b/3444-CP-#readme"
+}
