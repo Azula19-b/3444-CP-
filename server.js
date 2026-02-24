@@ -15,6 +15,7 @@ db.serialize(() => {
             category TEXT,
             price REAL,
             rating REAL,
+            image TEXT, 
             Location TEXT
         )
     `)
@@ -30,10 +31,10 @@ app.get("/", (req, res) => {
 })
 
 app.post("/add-food", (req, res) => {
-    const { name, category, price, rating, Location } = req.body
+    const { name, category, price, rating, Location, image } = req.body
     db.run(
-        `INSERT INTO foods (name, category, price, rating, Location) VALUES (?, ?, ?, ?, ?)`,
-        [name, category, price, rating, Location],
+        `INSERT INTO foods (name, category, price, rating, Location, image) VALUES (?, ?, ?, ?, ?, ?)`,
+        [name, category, price, rating, Location, image],
         function (err) {
             if (err) {
                 return res.status(500).json({ error: err.message })
@@ -55,8 +56,8 @@ app.get("/foods", (req, res) => {
 app.get("/search" , (req, res) => {
     const { query } = req.query
     db.all(
-        `SELECT * FROM foods WHERE name LIKE ? OR category LIKE ? OR Location LIKE ?`,
-        [`%${query}%`, `%${query}%`, `%${query}%`],
+        `SELECT * FROM foods WHERE name LIKE ? OR category LIKE ? OR Location LIKE ? OR image LIKE ?`,
+        [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`],
         (err, rows) => {
             if (err) {
                 return res.status(500).json({ error: err.message })
