@@ -47,10 +47,10 @@ app.get("/", (req, res) => {
 })
 
 app.post("/add-food", (req, res) => {
-    const { name, category, price, rating, image } = req.body
+    const { name, restaurant_id, category, price, rating, image } = req.body
     db.run(
         `INSERT INTO foods (name, restaurant_id, category, price, rating, image) VALUES (?, ?, ?, ?, ?, ?)`,
-        [name, req.body.restaurant_id, category, price, rating, image],
+        [name, restaurant_id, category, price, rating, image],
         function (err) {
             if (err) {
                 return res.status(500).json({ error: err.message })
@@ -92,10 +92,10 @@ app.get("/restaurants", (req, res) => {
     })
 })
 
-app.get("/search" , (req, res) => {
+app.get("/search-foods" , (req, res) => {
     const { query } = req.query
     db.all(
-        `SELECT * FROM foods WHERE name LIKE ? OR category LIKE ? OR Location LIKE ? OR image LIKE ?`,
+        `SELECT * FROM foods WHERE name LIKE ? OR category LIKE ? OR Locatgion LIKE ? OR image LIKE ?`,
         [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`],
         (err, rows) => {
             if (err) {
@@ -105,4 +105,18 @@ app.get("/search" , (req, res) => {
         }
     )
 
+})
+
+app.get("/search-restaurants" , (req, res) => {
+    const { query } = req.query
+    db.all(
+        `SELECT * FROM restaurants WHERE name LIKE ? OR location LIKE ?`,
+        [`%${query}%`, `%${query}%`],
+        (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message })
+            }
+            res.json(rows)
+        }
+    ) 
 })
