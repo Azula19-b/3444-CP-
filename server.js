@@ -41,17 +41,23 @@ app.listen(3000, () => {
     console.log("Server running on port 3000")
 })
 
+//authentication next
+// login and register routes
+
+//
+
+
 
 app.get("/", (req, res) => {
     res.send("Hello World")
 })
 
 app.post("/add-food", (req, res) => {
-    const { name, restaurant_id, category, price, rating, image } = req.body
+    const { name, restaurant_id, category, price, rating, image } = req.body // request body
     db.run(
-        `INSERT INTO foods (name, restaurant_id, category, price, rating, image) VALUES (?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO foods (name, restaurant_id, category, price, rating, image) VALUES (?, ?, ?, ?, ?, ?)`, // SQL to insert new food
         [name, restaurant_id, category, price, rating, image],
-        function (err) {
+        function (err) { // error handling
             if (err) {
                 return res.status(500).json({ error: err.message })
             }
@@ -61,11 +67,11 @@ app.post("/add-food", (req, res) => {
 })
 
 app.post("/add-restaurant", (req, res) => {
-    const { name, location } = req.body
+    const { name, location } = req.body // request body
     db.run(
-        `INSERT INTO restaurants (name, location) VALUES (?, ?)`,
+        `INSERT INTO restaurants (name, location) VALUES (?, ?)`, // SQL to insert new food
         [name, location],
-        function (err) {
+        function (err) { //error handling
             if (err) {
                 return res.status(500).json({ error: err.message })
             }
@@ -104,7 +110,6 @@ app.get("/search-foods" , (req, res) => {
             res.json(rows)
         }
     )
-
 })
 
 app.get("/search-restaurants" , (req, res) => {
@@ -120,3 +125,31 @@ app.get("/search-restaurants" , (req, res) => {
         }
     ) 
 })
+
+app.get("/search-foods-by-restaurant", (req, res) => {
+    const { restaurant_id } = req.query
+    db.all(
+        `SELECT * FROM foods WHERE restaurant_id = ?`,
+        [restaurant_id],
+        (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message })
+            }
+            res.json(rows)
+        }
+    )
+})
+
+app.get("/search-restaurants-by-location", (req, res) => {
+    const { location } = req.query
+    db.all(
+        `SELECT * FROM restaurants WHERE location LIKE ?`,
+        [`%${location}%`],
+        (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message })
+            }
+            res.json(rows)
+        }
+    )
+})  
