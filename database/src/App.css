@@ -1,42 +1,366 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+}
+
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+  background: linear-gradient(180deg, #f6f8f4 0%, #eef5ef 100%);
+}
+
+.mobile-frame {
+  width: 100%;
+  max-width: 1200px;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 20px 50px rgba(17, 38, 24, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 48px);
+}
+
+.top-bar {
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px 10px;
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.icon-button {
+  height: 44px;
+  width: 44px;
+  border-radius: 14px;
+  background: #f3f6f2;
+  color: #172033;
+  font-size: 1.15rem;
+  cursor: pointer;
+}
+
+.search-form {
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  height: 46px;
+  border: 1px solid #e3e8e5;
+  border-radius: 16px;
+  padding: 0 16px;
+  background: #fbfcfb;
+  color: #172033;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #2f8f4e;
+  box-shadow: 0 0 0 4px rgba(47, 143, 78, 0.12);
+}
+
+.hero-section {
+  padding: 12px 24px 6px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.1;
+  color: #172033;
+}
+
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 12px;
+  padding: 16px 24px 10px;
+}
+
+.results-label {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #172033;
+}
+
+.results-query {
+  margin: 4px 0 0;
+  color: #6c7688;
+  font-size: 0.9rem;
+}
+
+.sort-select {
+  border: 1px solid #e3e8e5;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: #172033;
+  outline: none;
+}
+
+.tags-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 24px 16px;
+  scrollbar-width: none;
+}
+
+.tags-row::-webkit-scrollbar {
+  display: none;
+}
+
+.tag-pill,
+.food-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.tag-pill {
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.tag-halal,
+.tag-vegan,
+.tag-gluten-free,
+.tag-protein {
+  background: #edf7ef;
+  color: #2f8f4e;
+}
+
+.results-list {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  padding: 8px 24px 96px;
+}
+
+.food-card {
+  background: #ffffff;
+  border: 1px solid #edf1ef;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(18, 36, 23, 0.08);
+}
+
+.food-image-wrap {
+  position: relative;
+}
+
+.food-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.favorite-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1e2b21;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(18, 36, 23, 0.12);
+}
+
+.favorite-button.favorited {
+  color: #2f8f4e;
+}
+
+.food-card-content {
+  padding: 14px 14px 16px;
+}
+
+.food-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+}
+
+.food-name {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  color: #172033;
+}
+
+.restaurant-name {
+  margin: 4px 0 0;
+  color: #6c7688;
+  font-size: 0.88rem;
+}
+
+.rating-badge {
+  background: #edf7ef;
+  color: #246f3c;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  color: #667084;
+  font-size: 0.84rem;
+}
+
+.tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.food-tag {
+  padding: 7px 11px;
+  background: #f3f7f2;
+  color: #2f8f4e;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.state-card,
+.empty-state {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px 20px;
   text-align: center;
+  border: 1px solid #edf1ef;
+  box-shadow: 0 10px 24px rgba(18, 36, 23, 0.07);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.state-title {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.state-text,
+.empty-state p {
+  margin: 0;
+  color: #6c7688;
+}
+
+.empty-icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.error-state {
+  border: 1px solid #f2d4d4;
+}
+
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #edf1ef;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 10px 8px 14px;
+}
+
+.nav-item {
+  background: transparent;
+  color: #7b8494;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 10px 4px;
+  cursor: pointer;
+}
+
+.nav-active {
+  color: #2f8f4e;
+}
+
+@media (min-width: 700px) {
+  .results-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  to {
-    transform: rotate(360deg);
+
+  .food-image {
+    height: 210px;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (min-width: 1024px) {
+  .mobile-frame {
+    min-height: calc(100vh - 48px);
+  }
+
+  .top-bar,
+  .hero-section,
+  .controls-row,
+  .tags-row {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .results-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .food-image {
+    height: 200px;
   }
 }
 
-.card {
-  padding: 2em;
-}
+@media (max-width: 480px) {
+  .page-shell {
+    padding: 0;
+  }
 
-.read-the-docs {
-  color: #888;
+  .mobile-frame {
+    max-width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+  }
+
+  .top-bar,
+  .hero-section,
+  .controls-row,
+  .tags-row,
+  .results-list {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .controls-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sort-select {
+    width: 100%;
+  }
+
+  .food-image {
+    height: 190px;
+  }
 }
