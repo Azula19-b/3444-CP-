@@ -1,4 +1,4 @@
-import FoodCollection from "./components/FoodCollection";
+import FoodCollection from "./components/foodcollection";
 
 function App() {
   return <FoodCollection />;

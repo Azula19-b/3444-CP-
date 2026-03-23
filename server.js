@@ -81,12 +81,23 @@ app.post("/add-restaurant", (req, res) => {
 })
 
 app.get("/foods", (req, res) => {
-    db.all(`SELECT * FROM foods`, [], (err, rows) => {
-        if (err) {
-            return res.status(500).json({ error: err.message })
+    db.all(
+        `
+        SELECT
+            foods.*,
+            restaurants.name AS restaurant_name,
+            restaurants.location AS restaurant_location
+        FROM foods
+        JOIN restaurants ON foods.restaurant_id = restaurants.id
+        `,
+        [],
+        (err, rows) => {
+            if (err) {
+                return res.status(500).json({ error: err.message })
+            }
+            res.json(rows)
         }
-        res.json(rows)
-    })
+    )
 })
 
 app.get("/restaurants", (req, res) => {
@@ -101,8 +112,20 @@ app.get("/restaurants", (req, res) => {
 app.get("/search-foods" , (req, res) => {
     const { query } = req.query
     db.all(
-        `SELECT * FROM foods WHERE name LIKE ? OR category LIKE ? OR Locatgion LIKE ? OR image LIKE ?`,
-        [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`],
+        `
+        SELECT
+            foods.*,
+            restaurants.name AS restaurant_name,
+            restaurants.location AS restaurant_location
+        FROM foods
+        JOIN restaurants ON foods.restaurant_id = restaurants.id
+        WHERE foods.name LIKE ?
+            OR foods.category LIKE ?
+            OR restaurants.name LIKE ?
+            OR restaurants.location LIKE ?
+            OR foods.image LIKE ?
+        `,
+        [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`],
         (err, rows) => {
             if (err) {
                 return res.status(500).json({ error: err.message })
@@ -129,7 +152,15 @@ app.get("/search-restaurants" , (req, res) => {
 app.get("/search-foods-by-restaurant", (req, res) => {
     const { restaurant_id } = req.query
     db.all(
-        `SELECT * FROM foods WHERE restaurant_id = ?`,
+        `
+        SELECT
+            foods.*,
+            restaurants.name AS restaurant_name,
+            restaurants.location AS restaurant_location
+        FROM foods
+        JOIN restaurants ON foods.restaurant_id = restaurants.id
+        WHERE foods.restaurant_id = ?
+        `,
         [restaurant_id],
         (err, rows) => {
             if (err) {
