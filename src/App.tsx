@@ -1,6 +1,9 @@
 import Login from "./app/pages/login";
 import Signup from "./app/pages/signup";
 import HomePage from "./pages/HomePage";
+import MapPage from "./pages/MapPage";
+import SearchPage from "./pages/SearchPage";
+import UserProfilePage from "./pages/UserProfilePage";
 
 import Survey1 from "./pages/survey/Survey1";
 import Survey2 from "./pages/survey/Survey2";
@@ -24,6 +27,9 @@ export default function App() {
         <Route path="/survey5" element={<Survey5 />} />
 
         <Route path="/home" element={<HomePage />} />
+        <Route path="/map" element={<MapPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/profile" element={<UserProfilePage />} />
       </Routes>
     </BrowserRouter>
   );

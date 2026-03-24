@@ -265,8 +265,8 @@ export default function HomePage() {
                   key={food.id}
                   image={food.image || fallbackImage}
                   name={food.name}
-                  restaurant={food.restaurant_name}
-                  location={food.restaurant_location || "Campus"}
+                  restaurant={food.restaurant_name || "Unknown restaurant"}
+                  location={food.restaurant_location || "Location unavailable"}
                   tags={food.tags}
                   price={food.price}
                   rating={food.rating ?? 0}
