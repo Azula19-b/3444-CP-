@@ -28,3 +28,7 @@ Backend Responsibilities:
  - User authentication 
  - Filter Logic 
  - Data Storage and Delivery
+
+UI / Figma Design
+- Figma link: https://www.figma.com/design/xw2Dd8iOO3rXfdhqreYdlZ/UNT-Quick-Bytes?node-id=0-1&p=f&t=Cy5C78GwKInY8XY4-0
+
