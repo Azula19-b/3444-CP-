@@ -13,9 +13,11 @@
 
 ## Historical data remediation
 
-The repository previously tracked `database.db` and `server/data/users.json`. The user file contained one account-like record, and its password field was not consistently recognizable as a bcrypt hash. The current tree no longer tracks either runtime file and does not expose their values.
+The repository previously tracked `database.db` and `server/data/users.json`. The user file contained one developer account record tied to a contributor identity. Its password field was a valid bcrypt hash with cost factor 10, not plaintext. A bcrypt hash still constitutes credential material because it permits offline password guessing, particularly if the underlying password was weak or reused. The current tree no longer tracks either runtime file and does not expose their values.
 
-Removing a file in a new commit does not remove it from earlier Git objects. Repository administrators should treat historical account data as exposed, invalidate any reused password, and use a coordinated history-cleaning process only after notifying every collaborator. This change intentionally does not rewrite history or authorship.
+Removing a file in a new commit does not remove it from earlier Git objects. Until the affected contributor confirms that the password was unique to this local prototype—or rotates it everywhere it may have been reused—the credential risk remains unresolved. Notification and remediation must happen through a verified private channel without transmitting the password or hash.
+
+The repository currently retains its original shared Git history so that collaborator authorship and legitimate project work are not rewritten without coordination. The remaining historical exposure is documented rather than presented as remediated. See [HISTORY_REMEDIATION.md](HISTORY_REMEDIATION.md) for an optional, separately authorized cleanup procedure.
 
 An unused authentication module also contained a hard-coded JWT secret. That module and dependency were removed because the active application did not issue or verify tokens. Any future token implementation must load a high-entropy secret from the deployment environment and include expiration and verification tests.
 
