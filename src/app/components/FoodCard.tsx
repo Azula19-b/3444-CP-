@@ -32,7 +32,9 @@ export function FoodCard({
           alt={name}
           className="w-full h-full object-cover"
         />
-        <button 
+        <button
+          type="button"
+          aria-label={isFavorite ? `Remove ${name} from favorites` : `Add ${name} to favorites`}
           onClick={() => setIsFavorite(!isFavorite)}
           className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform"
         >
