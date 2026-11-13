@@ -3,23 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { FoodCard } from "../app/components/FoodCard";
 import { PopularCard } from "../app/components/PopularCard";
 import { BottomNav } from "../app/components/BottomNav";
-
-type ApiFood = {
-  id: number;
-  name: string;
-  category: string | null;
-  price: number | null;
-  rating: number | null;
-  image: string | null;
-  restaurant_name: string;
-  restaurant_location: string | null;
-};
-
-type ApiRestaurant = {
-  id: number;
-  name: string;
-  location: string | null;
-};
+import { getFoods, getRestaurants, type Food, type Restaurant } from "../api/quickbytes";
+import { readStoredJson } from "../utils/storage";
 
 const filterOptions = [
   "Halal",
@@ -34,13 +19,13 @@ const fallbackImage =
   "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1080&q=80";
 
 export default function HomePage() {
-  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser") || "null");
-  const surveyAnswers = JSON.parse(localStorage.getItem("surveyAnswers") || "{}");
+  const loggedInUser = readStoredJson<{ name?: string } | null>("loggedInUser", null);
+  const surveyAnswers = readStoredJson<Record<string, string>>("surveyAnswers", {});
   const userName = loggedInUser?.name || "User";
   const firstLetter = userName.charAt(0).toUpperCase();
 
-  const [foods, setFoods] = useState<ApiFood[]>([]);
-  const [restaurants, setRestaurants] = useState<ApiRestaurant[]>([]);
+  const [foods, setFoods] = useState<Food[]>([]);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [search, setSearch] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -59,32 +44,13 @@ export default function HomePage() {
   }, [surveyAnswers.dietaryRestriction, surveyAnswers.foodGoal]);
 
   useEffect(() => {
-    const foodRoute = search.trim()
-      ? `/api/search-foods?query=${encodeURIComponent(search.trim())}`
-      : "/api/foods";
-
     setLoading(true);
     setError("");
 
-    Promise.all([
-      fetch(foodRoute).then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to load foods");
-        }
-
-        return res.json();
-      }),
-      fetch("/api/restaurants").then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to load restaurants");
-        }
-
-        return res.json();
-      }),
-    ])
+    Promise.all([getFoods(search), getRestaurants()])
       .then(([foodData, restaurantData]) => {
-        setFoods(Array.isArray(foodData) ? foodData : []);
-        setRestaurants(Array.isArray(restaurantData) ? restaurantData : []);
+        setFoods(foodData);
+        setRestaurants(restaurantData);
       })
       .catch(() => {
         setError("Unable to load food recommendations right now.");

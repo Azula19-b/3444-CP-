@@ -1,17 +1,8 @@
 import { Heart, Search, SlidersHorizontal, Star } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { BottomNav } from "../app/components/BottomNav";
-
-type ApiFood = {
-  id: number;
-  name: string;
-  category: string | null;
-  price: number | null;
-  rating: number | null;
-  image: string | null;
-  restaurant_name: string;
-  restaurant_location: string | null;
-};
+import { getFoods, type Food } from "../api/quickbytes";
+import { readStoredJson } from "../utils/storage";
 
 type SortOption = "rating" | "price" | "name";
 
@@ -28,15 +19,14 @@ const fallbackImage =
   "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1080&q=80";
 
 export default function SearchPage() {
-  const [foods, setFoods] = useState<ApiFood[]>([]);
+  const [foods, setFoods] = useState<Food[]>([]);
   const [search, setSearch] = useState("");
   const [submittedSearch, setSubmittedSearch] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<SortOption>("rating");
-  const [favorites, setFavorites] = useState<Record<string, boolean>>(() => {
-    const stored = localStorage.getItem("favoriteFoods");
-    return stored ? JSON.parse(stored) : {};
-  });
+  const [favorites, setFavorites] = useState<Record<string, boolean>>(() =>
+    readStoredJson("favoriteFoods", {})
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -45,23 +35,12 @@ export default function SearchPage() {
   }, [favorites]);
 
   useEffect(() => {
-    const route = submittedSearch.trim()
-      ? `/api/search-foods?query=${encodeURIComponent(submittedSearch.trim())}`
-      : "/api/foods";
-
     setLoading(true);
     setError("");
 
-    fetch(route)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to load search results");
-        }
-
-        return res.json();
-      })
+    getFoods(submittedSearch)
       .then((data) => {
-        setFoods(Array.isArray(data) ? data : []);
+        setFoods(data);
       })
       .catch(() => {
         setError("Unable to load search results right now.");

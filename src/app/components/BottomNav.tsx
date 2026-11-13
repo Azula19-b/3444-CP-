@@ -5,7 +5,7 @@ const navItems = [
   { icon: Home, label: "Home", path: "/home" },
   { icon: Search, label: "Search", path: "/search" },
   { icon: MapPin, label: "Map", path: "/map" },
-  { icon: Heart, label: "Favorites" },
+  { icon: Heart, label: "Favorites", path: "/search" },
   { icon: User, label: "Profile", path: "/profile" },
 ];
 
@@ -22,6 +22,8 @@ export function BottomNav() {
           return (
             <button
               key={label}
+              type="button"
+              aria-label={label}
               onClick={() => {
                 if (path) {
                   navigate(path);

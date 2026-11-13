@@ -10,6 +10,7 @@ import {
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { BottomNav } from "../app/components/BottomNav";
+import { readStoredJson } from "../utils/storage";
 
 const menuItems = [
   { icon: User, label: "Edit Profile" },
@@ -21,8 +22,15 @@ const menuItems = [
 
 export default function UserProfilePage() {
   const navigate = useNavigate();
-  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser") || "null");
-  const surveyAnswers = JSON.parse(localStorage.getItem("surveyAnswers") || "{}");
+  const loggedInUser = readStoredJson<{ name?: string; email?: string } | null>(
+    "loggedInUser",
+    null
+  );
+  const surveyAnswers = readStoredJson<{
+    dietaryRestriction?: string;
+    goal?: string;
+    foodPreferences?: string[];
+  }>("surveyAnswers", {});
 
   const preferenceTags = useMemo(() => {
     const selections = [
