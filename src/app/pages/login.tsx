@@ -23,6 +23,12 @@ export default function Login() {
       return;
     }
 
+    if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
+      setMessage("Please enter a valid email address.");
+      setMessageType("error");
+      return;
+    }
+
     try {
       const response = await fetch("/api/login", {
         method: "POST",
@@ -52,7 +58,7 @@ export default function Login() {
       setTimeout(() => {
         navigate("/survey1");
       }, 800);
-    } catch (error) {
+    } catch {
       setMessage("Unable to connect to the server.");
       setMessageType("error");
     }
@@ -81,12 +87,13 @@ export default function Login() {
         <form onSubmit={handleLogin} noValidate className="space-y-4">
 
           <div>
-            <label className="block text-[16px] font-semibold text-[#374151] mb-2">
+            <label htmlFor="login-email" className="block text-[16px] font-semibold text-[#374151] mb-2">
               Email
             </label>
 
             <input
               type="email"
+              id="login-email"
               placeholder="you@campus.edu"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -95,12 +102,13 @@ export default function Login() {
           </div>
 
           <div>
-            <label className="block text-[16px] font-semibold text-[#374151] mb-2">
+            <label htmlFor="login-password" className="block text-[16px] font-semibold text-[#374151] mb-2">
               Password
             </label>
 
             <input
               type="password"
+              id="login-password"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -130,7 +138,7 @@ export default function Login() {
           </div>
 
           {message && (
-            <p
+            <p aria-live="polite"
               className={`text-sm font-medium ${
                 messageType === "success"
                   ? "text-green-600"

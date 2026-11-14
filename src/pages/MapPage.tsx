@@ -3,21 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { divIcon } from "leaflet";
 import { BottomNav } from "../app/components/BottomNav";
-
-type ApiFood = {
-  id: number;
-  name: string;
-  rating: number | null;
-  restaurant_name: string;
-};
-
-type ApiRestaurant = {
-  id: number;
-  name: string;
-  location: string | null;
-  latitude: number | null;
-  longitude: number | null;
-};
+import { getFoods, getRestaurants, type Food, type Restaurant } from "../api/quickbytes";
 
 type MapLocation = {
   id: number;
@@ -69,8 +55,8 @@ function MapViewport({ center }: { center: [number, number] }) {
 }
 
 export default function MapPage() {
-  const [foods, setFoods] = useState<ApiFood[]>([]);
-  const [restaurants, setRestaurants] = useState<ApiRestaurant[]>([]);
+  const [foods, setFoods] = useState<Food[]>([]);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [selectedLocationId, setSelectedLocationId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -79,25 +65,10 @@ export default function MapPage() {
     setLoading(true);
     setError("");
 
-    Promise.all([
-      fetch("/api/foods").then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to load foods");
-        }
-
-        return res.json();
-      }),
-      fetch("/api/restaurants").then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to load restaurants");
-        }
-
-        return res.json();
-      }),
-    ])
+    Promise.all([getFoods(), getRestaurants()])
       .then(([foodData, restaurantData]) => {
-        setFoods(Array.isArray(foodData) ? foodData : []);
-        setRestaurants(Array.isArray(restaurantData) ? restaurantData : []);
+        setFoods(foodData);
+        setRestaurants(restaurantData);
       })
       .catch(() => {
         setError("Unable to load campus food locations right now.");

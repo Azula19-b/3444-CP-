@@ -1,4 +1,26 @@
-node_modules
-dist
-.DS_Store
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Build and test output
+dist/
+coverage/
+*.tsbuildinfo
+
+# Local environment and editor files
 .env
+.env.*
+!.env.example
+.DS_Store
+.idea/
+.vscode/
+
+# Local runtime data
+*.db
+*.db-shm
+*.db-wal
+server/data/users.json
+
+# Local logs and archives
+*.log
+*.zip

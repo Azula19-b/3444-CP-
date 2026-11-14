@@ -35,6 +35,18 @@ export default function Signup() {
       return;
     }
 
+    if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
+      setMessage("Please enter a valid email address.");
+      setMessageType("error");
+      return;
+    }
+
+    if (password.length < 8 || password.length > 128) {
+      setMessage("Password must be between 8 and 128 characters.");
+      setMessageType("error");
+      return;
+    }
+
     try {
       const response = await fetch("/api/signup", {
         method: "POST",
@@ -63,7 +75,7 @@ export default function Signup() {
       setTimeout(() => {
         navigate("/");
       }, 800);
-    } catch (error) {
+    } catch {
       setMessage("Unable to connect to the server.");
       setMessageType("error");
     }
@@ -92,12 +104,13 @@ export default function Signup() {
         <form onSubmit={handleSignup} noValidate className="space-y-4">
 
           <div>
-            <label className="block text-[16px] font-semibold text-[#374151] mb-2">
+            <label htmlFor="signup-name" className="block text-[16px] font-semibold text-[#374151] mb-2">
               Name
             </label>
 
             <input
               type="text"
+              id="signup-name"
               placeholder="Your full name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -106,12 +119,13 @@ export default function Signup() {
           </div>
 
           <div>
-            <label className="block text-[16px] font-semibold text-[#374151] mb-2">
+            <label htmlFor="signup-email" className="block text-[16px] font-semibold text-[#374151] mb-2">
               Email
             </label>
 
             <input
               type="email"
+              id="signup-email"
               placeholder="you@campus.edu"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -120,12 +134,13 @@ export default function Signup() {
           </div>
 
           <div>
-            <label className="block text-[16px] font-semibold text-[#374151] mb-2">
+            <label htmlFor="signup-password" className="block text-[16px] font-semibold text-[#374151] mb-2">
               Password
             </label>
 
             <input
               type="password"
+              id="signup-password"
               placeholder="Create a password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -134,12 +149,13 @@ export default function Signup() {
           </div>
 
           <div>
-            <label className="block text-[16px] font-semibold text-[#374151] mb-2">
+            <label htmlFor="signup-confirm-password" className="block text-[16px] font-semibold text-[#374151] mb-2">
               Confirm Password
             </label>
 
             <input
               type="password"
+              id="signup-confirm-password"
               placeholder="Confirm your password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -148,7 +164,7 @@ export default function Signup() {
           </div>
 
           {message && (
-            <p
+            <p aria-live="polite"
               className={`text-sm font-medium ${
                 messageType === "success"
                   ? "text-green-600"
